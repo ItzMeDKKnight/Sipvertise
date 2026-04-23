@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sipvertise — Water Advertising</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&family=Inter:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --rust: #F2A900;
+      --rust-light: #FFC107;
+      --rust-dark: #D48800;
+      --near-black: #0E0C0B;
+      --dark: #151210;
+      --off-white: #E8E0D5;
+      --muted: rgba(232, 224, 213, 0.55);
+      --outline-rust: #F2A900;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--near-black);
+      color: var(--off-white);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      position: fixed;
+      width: 12px;
+      height: 12px;
+      background: var(--rust);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s, width 0.2s, height 0.2s;
+      mix-blend-mode: normal;
+    }
+
+    .cursor-ring {
+      position: fixed;
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--rust);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: transform 0.3s ease, width 0.3s, height 0.3s;
+    }
+
+    /* NAV */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 48px;
+      z-index: 100;
+      background: linear-gradient(to bottom, rgba(14, 12, 11, 0.95) 0%, transparent 100%);
+    }
+
+    .nav-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 22px;
+      letter-spacing: 0.08em;
+      color: var(--off-white);
+      text-transform: uppercase;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 40px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--off-white);
+    }
+
+    .nav-cart {
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--rust);
+      color: var(--off-white);
+      padding: 8px 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      transition: background 0.2s;
+    }
+
+    .nav-cart:hover {
+      background: var(--rust);
+    }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background: var(--near-black);
+    }
+
+    .hero-bg-text {
+      position: absolute;
+      bottom: -20px;
+      left: -5px;
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(120px, 18vw, 220px);
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(139, 58, 26, 0.3);
+      text-transform: uppercase;
+      line-height: 0.85;
+      pointer-events: none;
+      user-select: none;
+      letter-spacing: -0.02em;
+    }
+
+    .hero-word-fill {
+      color: var(--rust);
+      -webkit-text-stroke: 0;
+      display: block;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      padding: 0 48px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 40px;
+    }
+
+    .hero-left {}
+
+    .hero-label {
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hero-label::before {
+      content: '';
+      display: block;
+      width: 30px;
+      height: 1px;
+      background: var(--rust);
+    }
+
+    .hero-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(72px, 12vw, 140px);
+      line-height: 0.88;
+      text-transform: uppercase;
+      color: var(--rust);
+      letter-spacing: -0.01em;
+      margin-bottom: 32px;
+    }
+
+    .hero-desc {
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--muted);
+      max-width: 300px;
+      margin-bottom: 36px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: var(--rust);
+      color: var(--off-white);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 14px 32px;
+      border-radius: 999px;
+      text-decoration: none;
+      border: none;
+      cursor: none;
+      transition: background 0.2s;
+    }
+
+    .btn-primary:hover {
+      background: var(--rust-light);
+    }
+
+    .hero-right {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 500px;
+    }
+
+    /* BOTTLE SVG */
+    .bottle-wrap {
+      position: relative;
+      transform: rotate(-30deg);
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: rotate(-30deg) translateY(0px);
+      }
+
+      50% {
+        transform: rotate(-30deg) translateY(-20px);
+      }
+    }
+
+    .bottle-svg {
+      width: 400px;
+      height: 140px;
+      filter: drop-shadow(0 20px 60px rgba(139, 58, 26, 0.4));
+    }
+
+    .badge-new {
+      position: absolute;
+      top: -30px;
+      right: 20px;
+      width: 64px;
+      height: 64px;
+      background: var(--near-black);
+      border: 1.5px solid var(--rust);
+      clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .badge-new span {
+      font-family: 'Anton', sans-serif;
+      font-size: 10px;
+      color: var(--rust);
+      letter-spacing: 0.1em;
+    }
+
+    .rock-1,
+    .rock-2 {
+      position: absolute;
+      background: #2A2520;
+      border-radius: 40% 60% 55% 45% / 50% 40% 60% 50%;
+      animation: float-rock 7s ease-in-out infinite;
+    }
+
+    .rock-1 {
+      width: 50px;
+      height: 40px;
+      top: 60px;
+      right: 10px;
+      animation-delay: -2s;
+    }
+
+    .rock-2 {
+      width: 35px;
+      height: 28px;
+      bottom: 100px;
+      left: 10px;
+      animation-delay: -4s;
+      opacity: 0.7;
+    }
+
+    @keyframes float-rock {
+
+      0%,
+      100% {
+        transform: translateY(0) rotate(0deg);
+      }
+
+      50% {
+        transform: translateY(-15px) rotate(8deg);
+      }
+    }
+
+    /* MARQUEE */
+    .marquee-wrap {
+      overflow: hidden;
+      background: var(--rust);
+      padding: 14px 0;
+      white-space: nowrap;
+    }
+
+    .marquee-track {
+      display: inline-flex;
+      animation: marquee 18s linear infinite;
+    }
+
+    .marquee-track span {
+      font-family: 'Anton', sans-serif;
+      font-size: 14px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--near-black);
+      padding: 0 32px;
+    }
+
+    .marquee-track .dot {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--near-black);
+      border-radius: 50%;
+      margin: 0 4px;
+      vertical-align: middle;
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* SECTION BASE */
+    section {
+      padding: 100px 48px;
+    }
+
+    /* FEATURES SECTION */
+    .features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+      padding: 0;
+      min-height: 80vh;
+      align-items: stretch;
+    }
+
+    .features-visual {
+      position: relative;
+      background: #0A0908;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 40px;
+    }
+
+    .water-texture {
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 18px, rgba(255, 255, 255, 0.02) 18px, rgba(255, 255, 255, 0.02) 19px),
+        repeating-linear-gradient(90deg, transparent, transparent 30px, rgba(255, 255, 255, 0.01) 30px, rgba(255, 255, 255, 0.01) 31px);
+      opacity: 0.6;
+    }
+
+    .features-bg-word {
+      position: absolute;
+      bottom: -10px;
+      left: -10px;
+      font-family: 'Anton', sans-serif;
+      font-size: 130px;
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(139, 58, 26, 0.2);
+      text-transform: uppercase;
+      line-height: 1;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .bottle-horizontal {
+      position: relative;
+      z-index: 2;
+      transform: rotate(-10deg);
+      animation: float-h 5s ease-in-out infinite;
+    }
+
+    @keyframes float-h {
+
+      0%,
+      100% {
+        transform: rotate(-10deg) translateY(0);
+      }
+
+      50% {
+        transform: rotate(-10deg) translateY(-12px);
+      }
+    }
+
+    .features-info {
+      background: var(--dark);
+      padding: 60px 52px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 40px;
+    }
+
+    .feature-item {}
+
+    .feature-label {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .feature-title {
+      font-family: 'Anton', sans-serif;
+      font-size: 26px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 10px;
+    }
+
+    .feature-desc {
+      font-size: 12px;
+      line-height: 1.85;
+      color: var(--muted);
+      max-width: 340px;
+    }
+
+    .feature-divider {
+      height: 1px;
+      background: rgba(139, 58, 26, 0.2);
+      margin: 8px 0;
+    }
+
+    /* COSMIC SECTION */
+    .cosmic {
+      background: var(--near-black);
+      position: relative;
+      overflow: hidden;
+      padding: 120px 48px;
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .cosmic-bg-left {
+      position: absolute;
+      top: 50%;
+      left: -20px;
+      transform: translateY(-50%);
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(60px, 9vw, 110px);
+      line-height: 1;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(139, 58, 26, 0.15);
+      pointer-events: none;
+      user-select: none;
+      text-transform: uppercase;
+      z-index: 0;
+    }
+
+    .cosmic-main {
+      position: relative;
+      z-index: 2;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+      gap: 60px;
+    }
+
+    .cosmic-left {}
+
+    .cosmic-headline-outline {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(50px, 7vw, 90px);
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(232, 224, 213, 0.3);
+      text-transform: uppercase;
+      line-height: 0.95;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .cosmic-headline-fill {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(50px, 7vw, 90px);
+      color: var(--rust);
+      text-transform: uppercase;
+      line-height: 0.95;
+      letter-spacing: -0.01em;
+      margin-bottom: 40px;
+    }
+
+    .cosmic-right {}
+
+    .cosmic-bottle-wrap {
+      display: flex;
+      justify-content: center;
+      position: relative;
+      height: 300px;
+      align-items: center;
+    }
+
+    .cosmic-rocks {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .cr1,
+    .cr2,
+    .cr3 {
+      position: absolute;
+      background: #2A2520;
+      border-radius: 40% 60% 55% 45% / 50% 40% 60% 50%;
+    }
+
+    .cr1 {
+      width: 60px;
+      height: 48px;
+      top: 10px;
+      right: 30px;
+      animation: float-rock 6s ease-in-out infinite;
+    }
+
+    .cr2 {
+      width: 40px;
+      height: 32px;
+      bottom: 20px;
+      left: 20px;
+      animation: float-rock 8s ease-in-out infinite -3s;
+      opacity: 0.8;
+    }
+
+    .cr3 {
+      width: 25px;
+      height: 20px;
+      top: 50%;
+      right: 10px;
+      animation: float-rock 5s ease-in-out infinite -1s;
+      opacity: 0.5;
+    }
+
+    /* TICKER SECTION */
+    .ticker-section {
+      background: var(--dark);
+      padding: 100px 48px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ticker-bg-word {
+      position: absolute;
+      font-family: 'Anton', sans-serif;
+      font-size: 240px;
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(139, 58, 26, 0.06);
+      text-transform: uppercase;
+      bottom: -60px;
+      left: 0;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+      letter-spacing: -0.02em;
+    }
+
+    .ticker-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+      position: relative;
+      z-index: 2;
+    }
+
+    .ticker-left {}
+
+    .section-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 20px;
+    }
+
+    .ticker-headline {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(44px, 7vw, 84px);
+      text-transform: uppercase;
+      line-height: 0.9;
+      letter-spacing: -0.01em;
+    }
+
+    .ticker-headline .outline {
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(232, 224, 213, 0.25);
+    }
+
+    .ticker-headline .filled {
+      color: var(--rust);
+    }
+
+    .ticker-right {
+      padding-top: 8px;
+    }
+
+    .ticker-body {
+      font-size: 13px;
+      line-height: 1.9;
+      color: var(--muted);
+      margin-bottom: 28px;
+      max-width: 380px;
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--rust);
+      color: var(--off-white);
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 12px 28px;
+      border-radius: 999px;
+      text-decoration: none;
+      cursor: none;
+      transition: background 0.2s;
+    }
+
+    .btn-outline:hover {
+      background: var(--rust);
+    }
+
+    /* PRODUCT GRID */
+    .product-grid-section {
+      background: var(--near-black);
+      padding: 100px 48px;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 52px;
+    }
+
+    .section-title {
+      font-family: 'Anton', sans-serif;
+      font-size: 52px;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      line-height: 0.9;
+    }
+
+    .section-title .rust {
+      color: var(--rust);
+    }
+
+    .section-title .outline {
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(232, 224, 213, 0.25);
+      display: block;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+
+    .product-card {
+      background: #111009;
+      padding: 36px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      border: 1px solid rgba(139, 58, 26, 0.1);
+      transition: border-color 0.3s, background 0.3s;
+      cursor: none;
+    }
+
+    .product-card:hover {
+      border-color: rgba(139, 58, 26, 0.4);
+      background: #16110E;
+    }
+
+    .product-card-img {
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .mini-bottle {
+      width: 160px;
+      height: 55px;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .product-card:nth-child(2) .mini-bottle {
+      animation-delay: -1s;
+    }
+
+    .product-card:nth-child(3) .mini-bottle {
+      animation-delay: -2s;
+    }
+
+    .product-card:nth-child(4) .mini-bottle {
+      animation-delay: -3s;
+    }
+
+    .product-card-name {
+      font-family: 'Anton', sans-serif;
+      font-size: 22px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--off-white);
+      text-align: center;
+    }
+
+    .product-card-sub {
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .product-card-price {
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      color: var(--rust);
+      border-top: 1px solid rgba(139, 58, 26, 0.2);
+      padding-top: 16px;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* JUPITER BRAND SECTION */
+    .brand-section {
+      background: var(--near-black);
+      padding: 100px 0;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .brand-repeat {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .brand-row {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(80px, 14vw, 160px);
+      text-transform: uppercase;
+      line-height: 0.92;
+      letter-spacing: -0.02em;
+      display: block;
+      padding: 0 20px;
+    }
+
+    .brand-row-1 {
+      color: var(--rust);
+    }
+
+    .brand-row-2 {
+      color: transparent;
+      -webkit-text-stroke: 1.5px rgba(139, 58, 26, 0.4);
+    }
+
+    .brand-row-3 {
+      color: transparent;
+      -webkit-text-stroke: 1px rgba(139, 58, 26, 0.15);
+    }
+
+    /* FOOTER */
+    footer {
+      background: #080604;
+      padding: 60px 48px 40px;
+      border-top: 1px solid rgba(139, 58, 26, 0.15);
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 52px;
+    }
+
+    .footer-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 36px;
+      color: var(--rust);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 16px;
+    }
+
+    .footer-tagline {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.7;
+      max-width: 220px;
+    }
+
+    .footer-heading {
+      font-size: 10px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--rust);
+      margin-bottom: 20px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .footer-links a {
+      font-size: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--off-white);
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid rgba(139, 58, 26, 0.1);
+      padding-top: 24px;
+      font-size: 11px;
+      color: rgba(232, 224, 213, 0.3);
+      letter-spacing: 0.05em;
+    }
+
+
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Noise overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1000;
+      opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 150px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="cursor" id="cur"></div>
+  <div class="cursor-ring" id="ring"></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="nav-logo"><img src="logo.png" alt="Sipvertise" style="height: 130px;"></div>
+    <ul class="nav-links">
+      <li><a href="#">Home</a></li>
+      <li><a href="#">How it Works</a></li>
+      <li><a href="#formats">Distribution</a></li>
+      <li><a href="#footer">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="hero-bg-text">
+      ADS ON<br>
+      <span class="hero-word-fill">WATER</span>
+    </div>
+    <div class="hero-content">
+      <div class="hero-left reveal">
+        <div class="hero-label">Innovative Advertising</div>
+        <div class="hero-title" style="font-size: clamp(60px, 10vw, 110px);">SIPVERTISE</div>
+        <p class="hero-desc">Sipvertise provides premium packaged drinking water that serves as a canvas for your brand.
+          Hydrate your audience while delivering your message directly to their hands.</p>
+        <a href="#" class="btn-primary">Advertise With Us →</a>
+      </div>
+      <div class="hero-right reveal">
+        <div class="badge-new"><span>NEW</span></div>
+        <div class="bottle-wrap">
+          <img src="bottle.png" alt="Sipvertise Bottle"
+            style="height: 400px; width: auto; filter: drop-shadow(0 20px 60px rgba(242,169,0,0.4)); transform: rotate(30deg);">
+        </div>
+        <div class="rock-1"></div>
+        <div class="rock-2"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track" id="marquee1">
+      <span>Thirsty? Thank Ads</span><span class="dot"></span>
+      <span>Free Drinking Water</span><span class="dot"></span>
+      <span>Premium Advertising</span><span class="dot"></span>
+      <span>Hydrate Your Audience</span><span class="dot"></span>
+      <span>Sipvertise</span><span class="dot"></span>
+      <span>Advertise With Us</span><span class="dot"></span>
+      <span>Thirsty? Thank Ads</span><span class="dot"></span>
+      <span>Free Drinking Water</span><span class="dot"></span>
+      <span>Premium Advertising</span><span class="dot"></span>
+      <span>Hydrate Your Audience</span><span class="dot"></span>
+      <span>Sipvertise</span><span class="dot"></span>
+      <span>Advertise With Us</span><span class="dot"></span>
+    </div>
+  </div>
+
+  <!-- FEATURES -->
+  <div class="features reveal">
+    <div class="features-visual">
+      <div class="water-texture"></div>
+      <div class="features-bg-word">HYDRATE<br>YOUR<br>BRAND</div>
+      <div class="bottle-horizontal">
+        <img src="bottle.png" alt="Sipvertise Bottle" style="height: 250px; width: auto; transform: rotate(15deg);">
+      </div>
+    </div>
+    <div class="features-info">
+      <div class="feature-item">
+        <div class="feature-label">High Visibility</div>
+        <div class="feature-title">Walking Billboards</div>
+        <p class="feature-desc">Your brand in the hands of thirsty consumers, moving through the city and generating
+          impressions with every sip.</p>
+      </div>
+      <div class="feature-divider"></div>
+      <div class="feature-item">
+        <div class="feature-label">Cost Effective</div>
+        <div class="feature-title">Targeted Reach</div>
+        <p class="feature-desc">Distribute ad-supported water at events, campuses, or specific locations to reach your
+          exact target demographic.</p>
+      </div>
+      <div class="feature-divider"></div>
+      <div class="feature-item">
+        <div class="feature-label">Brand Affinity</div>
+        <div class="feature-title">Positive Association</div>
+        <p class="feature-desc">Consumers love free water. Associate your brand with hydration, health, and a refreshing
+          moment in their day.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- COSMIC SECTION -->
+  <section class="cosmic">
+    <div class="cosmic-bg-left">YOUR BRAND.<br>IN THEIR.<br>HANDS.</div>
+    <div class="cosmic-main reveal">
+      <div class="cosmic-left">
+        <div class="cosmic-headline-outline">YOUR BRAND.</div>
+        <div class="cosmic-headline-outline">IN THEIR</div>
+        <div class="cosmic-headline-fill">HANDS</div>
+        <p style="font-size:12px;color:var(--muted);line-height:1.85;max-width:340px;margin-bottom:28px;">Traditional
+          ads are easily ignored. Sipvertise puts your message on something people actually want: cold, refreshing
+          drinking water.</p>
+        <a href="#" class="btn-primary">Advertise With Us →</a>
+      </div>
+      <div class="cosmic-right">
+        <div class="cosmic-bottle-wrap">
+          <div class="cosmic-rocks">
+            <div class="cr1"></div>
+            <div class="cr2"></div>
+            <div class="cr3"></div>
+          </div>
+          <div style="transform:rotate(-15deg);animation:float 5.5s ease-in-out infinite;">
+            <img src="bottle.png" alt="Sipvertise Bottle"
+              style="height: 250px; width: auto; filter: drop-shadow(0 10px 40px rgba(242,169,0,0.35));">
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ALL GOOD VIBES TICKER SECTION -->
+  <section class="ticker-section">
+    <div class="ticker-bg-word">AD-WATER</div>
+    <div class="ticker-layout reveal">
+      <div class="ticker-left">
+        <div class="section-eyebrow">Why Us</div>
+        <div class="ticker-headline">
+          <span class="outline">MAKE<br>THEM<br>SMILE </span>
+          <span class="filled">WITH WATER.</span>
+        </div>
+      </div>
+      <div class="ticker-right">
+        <p class="ticker-body">Advertising doesn't have to be intrusive. By providing free or subsidized packaged
+          drinking water, you're giving the consumer a gift. This creates immediate positive brand affinity and
+          guarantees your message is seen up close.</p>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCT GRID -->
+  <section class="product-grid-section" id="formats">
+    <div class="section-header reveal">
+      <div class="section-title">
+        <span class="rust">Our</span>
+        <span class="outline">Formats</span>
+      </div>
+
+    </div>
+    <div class="product-grid reveal">
+      <div class="product-card">
+        <div class="product-card-img">
+          <img src="bottle.png" alt="Sipvertise Bottle" style="height: 120px; width: auto; margin-bottom: 20px;">
+        </div>
+        <div class="product-card-name">Large</div>
+        <div class="product-card-sub">1 Litre PET</div>
+        <div class="product-card-price">High Volume</div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-img">
+          <img src="500ml.png" alt="Sipvertise Bottle" style="height: 120px; width: auto; margin-bottom: 20px;">
+        </div>
+        <div class="product-card-name">Standard</div>
+        <div class="product-card-sub">500ml</div>
+        <div class="product-card-price">Events / VIP</div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-img">
+          <img src="250ml.png" alt="Sipvertise Bottle" style="height: 120px; width: auto; margin-bottom: 20px;">
+        </div>
+        <div class="product-card-name">Event Mini</div>
+        <div class="product-card-sub">250ml PET</div>
+        <div class="product-card-price">Conferences</div>
+      </div>
+      <div class="product-card">
+        <div class="product-card-img">
+          <img src="box.png" alt="Sipvertise Bottle" style="height: 120px; width: auto; margin-bottom: 20px;">
+        </div>
+        <div class="product-card-name">Eco-Box</div>
+        <div class="product-card-sub">Carton Water</div>
+        <div class="product-card-price">Sustainable</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BRAND REPEAT -->
+  <section class="brand-section reveal">
+    <div class="brand-repeat">
+      <span class="brand-row brand-row-1">SIPVERTISE</span>
+      <span class="brand-row brand-row-2">SIPVERTISE</span>
+      <span class="brand-row brand-row-3">SIPVERTISE</span>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer id="footer">
+    <div class="footer-top">
+      <div>
+        <div class="footer-logo"><img src="logo.png" alt="Sipvertise" style="height: 48px; margin-bottom: 16px;"></div>
+        <p class="footer-tagline">Premium advertising on packaged drinking water. Hydrate the world while promoting your
+          brand.</p>
+      </div>
+      <div>
+        <div class="footer-heading">Navigate</div>
+        <ul class="footer-links">
+          <li><a href="#">Advertise</a></li>
+          <li><a href="#">How it Works</a></li>
+          <li><a href="#formats">Distribution</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-heading">Legal</div>
+        <ul class="footer-links">
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Responsible Marketing</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Sipvertise. All rights reserved.</span>
+      <span>Thirsty? Thank Ads 💧</span>
+    </div>
+  </footer>
+
+
+
+  <script>
+    // Cursor
+    const cur = document.getElementById('cur');
+    const ring = document.getElementById('ring');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cur.style.left = mx + 'px'; cur.style.top = my + 'px';
+    });
+    function animRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+      requestAnimationFrame(animRing);
+    }
+    animRing();
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+    reveals.forEach(r => io.observe(r));
+
+
+  </script>
+</body>
+
+</html>
