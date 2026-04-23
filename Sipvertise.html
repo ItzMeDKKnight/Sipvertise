@@ -881,6 +881,125 @@
 
 
 
+    /* NEW FEATURES STYLES */
+    .customize-section {
+      background: var(--near-black);
+      padding: 100px 48px;
+    }
+
+    .customize-content {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .customize-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .input-group label {
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--rust);
+    }
+
+    .input-group input[type="text"],
+    .input-group input[type="file"],
+    .input-group input[type="email"],
+    .input-group input[type="tel"],
+    .contact-form textarea {
+      background: var(--dark);
+      border: 1px solid rgba(139, 58, 26, 0.3);
+      color: var(--off-white);
+      padding: 16px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      border-radius: 4px;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+
+    .input-group input:focus,
+    .contact-form textarea:focus {
+      border-color: var(--rust);
+    }
+
+    .customize-preview {
+      height: 500px;
+      background: #111009;
+      border: 1px solid rgba(139, 58, 26, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      cursor: grab;
+    }
+
+    .customize-preview:active {
+      cursor: grabbing;
+    }
+
+    .contact-section {
+      background: var(--dark);
+      padding: 100px 48px;
+    }
+
+    .contact-content {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      background: var(--near-black);
+      padding: 40px;
+      border: 1px solid rgba(139, 58, 26, 0.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    .contact-form textarea {
+      resize: vertical;
+    }
+
+    button.btn-primary {
+      font-family: 'Inter', sans-serif;
+    }
+
+    .status-success {
+      color: var(--near-black);
+      padding: 15px;
+      border: 1px solid #4CAF50;
+      background: #4CAF50;
+      font-weight: 500;
+      border-radius: 4px;
+    }
+
+    .status-error {
+      color: var(--off-white);
+      padding: 15px;
+      border: 1px solid #F44336;
+      background: rgba(244, 67, 54, 0.2);
+      border-radius: 4px;
+    }
+
     /* Scroll reveal */
     .reveal {
       opacity: 0;
@@ -919,7 +1038,8 @@
       <li><a href="#">Home</a></li>
       <li><a href="#">How it Works</a></li>
       <li><a href="#formats">Distribution</a></li>
-      <li><a href="#footer">Contact</a></li>
+      <li><a href="#customize">Customize Your Bottle</a></li>
+      <li><a href="#contact-us">Contact Us</a></li>
     </ul>
   </nav>
 
@@ -1103,6 +1223,72 @@
     </div>
   </section>
 
+  <!-- CUSTOMIZE BOTTLE SECTION -->
+  <section class="customize-section reveal" id="customize">
+    <div class="section-header">
+      <div class="section-title">
+        <span class="rust">Customize</span>
+        <span class="outline">Your Bottle</span>
+      </div>
+    </div>
+    <div class="customize-content">
+      <div class="customize-controls">
+        <div class="input-group">
+          <label>Pre-made Label</label>
+          <input type="file" id="bottle-premade-upload" accept="image/*">
+        </div>
+      </div>
+      <div class="customize-preview" id="threejs-container">
+        <!-- 3D Canvas will be injected here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT US SECTION -->
+  <section class="contact-section reveal" id="contact-us">
+    <div class="section-header">
+      <div class="section-title">
+        <span class="rust">Contact</span>
+        <span class="outline">Us</span>
+      </div>
+    </div>
+    <div class="contact-content">
+      <form class="contact-form" id="contact-form" enctype="multipart/form-data">
+        <div class="form-row">
+          <div class="input-group">
+            <label>Name</label>
+            <input type="text" name="user_name" required>
+          </div>
+          <div class="input-group">
+            <label>Email</label>
+            <input type="email" name="user_email" required>
+          </div>
+        </div>
+        <div class="input-group">
+          <label>Address</label>
+          <input type="text" name="user_address" required>
+        </div>
+        <div class="input-group">
+          <label>Contact Number</label>
+          <input type="tel" name="user_phone" required>
+        </div>
+        <div class="input-group">
+          <label>Query</label>
+          <textarea name="message" rows="4" required></textarea>
+        </div>
+        <div class="input-group">
+          <label>Attachment (.doc, .docx, .jpg, .jpeg, .png)</label>
+          <input type="file" name="attachment" id="contact-attachment" accept=".doc,.docx,.jpg,.jpeg,.png">
+          <div style="font-size: 0.85em; opacity: 0.7; margin-top: 5px;">(Maximum file size is 50kb)</div>
+        </div>
+
+        <button type="submit" class="btn-primary" style="margin-top: 10px;">Submit Query →</button>
+
+        <div id="form-status" style="display: none; margin-top: 20px;"></div>
+      </form>
+    </div>
+  </section>
+
   <!-- FOOTER -->
   <footer id="footer">
     <div class="footer-top">
@@ -1136,6 +1322,246 @@
   </footer>
 
 
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+  <script src="config.js"></script>
+
+  <script>
+    // THREE.JS BOTTLE CUSTOMIZATION LOGIC
+    (function() {
+      const container = document.getElementById('threejs-container');
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+      camera.position.z = 7; // Moved back slightly to fit taller bottle
+
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.setPixelRatio(window.devicePixelRatio);
+      container.appendChild(renderer.domElement);
+
+      const ambientLight = new THREE.AmbientLight(0xffffff, 0.7);
+      scene.add(ambientLight);
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+      directionalLight.position.set(5, 5, 5);
+      scene.add(directionalLight);
+
+      // Create a canvas for dynamic texture
+      const textureCanvas = document.createElement('canvas');
+      textureCanvas.width = 1024;
+      textureCanvas.height = 440;
+      const ctx = textureCanvas.getContext('2d');
+
+      let bottleTexture = new THREE.CanvasTexture(textureCanvas);
+      bottleTexture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+
+      const bottleGroup = new THREE.Group();
+
+      // Realistic Plastic Material for Bailley bottle
+      const plasticMat = new THREE.MeshPhysicalMaterial({ 
+        color: 0xccffff, 
+        transparent: true, 
+        opacity: 0.35, 
+        roughness: 0.1,
+        transmission: 0.9,
+        thickness: 0.2
+      });
+
+      // Bottle Cap (Blue)
+      const capGeo = new THREE.CylinderGeometry(0.3, 0.3, 0.25, 32);
+      const capMat = new THREE.MeshStandardMaterial({ color: 0x0047AB, roughness: 0.3 }); // Cobalt Blue
+      const cap = new THREE.Mesh(capGeo, capMat);
+      cap.position.y = 2.1;
+      bottleGroup.add(cap);
+
+      // Neck ring
+      const ringGeo = new THREE.CylinderGeometry(0.33, 0.33, 0.05, 32);
+      const ring = new THREE.Mesh(ringGeo, plasticMat);
+      ring.position.y = 1.95;
+      bottleGroup.add(ring);
+
+      // Neck curve
+      const neckGeo = new THREE.CylinderGeometry(0.3, 0.75, 1.0, 32);
+      const neck = new THREE.Mesh(neckGeo, plasticMat);
+      neck.position.y = 1.4;
+      bottleGroup.add(neck);
+
+      // Top ribbed body
+      const topBodyGeo = new THREE.CylinderGeometry(0.75, 0.75, 0.3, 32, 4);
+      const topBody = new THREE.Mesh(topBodyGeo, plasticMat);
+      topBody.position.y = 0.75;
+      bottleGroup.add(topBody);
+
+      // Label Body
+      const labelGeo = new THREE.CylinderGeometry(0.76, 0.76, 2.0, 32);
+      const labelMat = new THREE.MeshStandardMaterial({
+        map: bottleTexture,
+        roughness: 0.3,
+        metalness: 0.1
+      });
+      const label = new THREE.Mesh(labelGeo, labelMat);
+      label.position.y = -0.4;
+      bottleGroup.add(label);
+
+      // Bottom ribbed body
+      const bottomBodyGeo = new THREE.CylinderGeometry(0.75, 0.75, 0.9, 32, 6);
+      const bottomBody = new THREE.Mesh(bottomBodyGeo, plasticMat);
+      bottomBody.position.y = -1.85;
+      bottleGroup.add(bottomBody);
+      
+      // Bottom curve
+      const baseGeo = new THREE.CylinderGeometry(0.75, 0.65, 0.3, 32);
+      const base = new THREE.Mesh(baseGeo, plasticMat);
+      base.position.y = -2.45;
+      bottleGroup.add(base);
+
+      // Tilt slightly
+      bottleGroup.rotation.x = 0.05;
+      bottleGroup.scale.set(0.9, 0.9, 0.9);
+
+      scene.add(bottleGroup);
+
+      // Animation
+      function animateThree() {
+        requestAnimationFrame(animateThree);
+        renderer.render(scene, camera);
+      }
+      animateThree();
+
+      // Interactivity (Rotate 360)
+      let isDragging = false;
+      let previousMousePosition = { x: 0, y: 0 };
+
+      container.addEventListener('mousedown', (e) => { 
+        isDragging = true; 
+      });
+      container.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+          const deltaMove = { x: e.offsetX - previousMousePosition.x, y: e.offsetY - previousMousePosition.y };
+          bottleGroup.rotation.y += deltaMove.x * 0.01;
+          bottleGroup.rotation.x += deltaMove.y * 0.01;
+        }
+        previousMousePosition = { x: e.offsetX, y: e.offsetY };
+      });
+      document.addEventListener('mouseup', () => { isDragging = false; });
+      container.addEventListener('mouseleave', () => { isDragging = false; });
+
+      // Touch
+      container.addEventListener('touchstart', (e) => {
+        isDragging = true;
+        const rect = container.getBoundingClientRect();
+        previousMousePosition = { x: e.touches[0].clientX - rect.left, y: e.touches[0].clientY - rect.top };
+      }, {passive: true});
+      container.addEventListener('touchmove', (e) => {
+        if (isDragging) {
+          const rect = container.getBoundingClientRect();
+          const currentX = e.touches[0].clientX - rect.left;
+          const currentY = e.touches[0].clientY - rect.top;
+          const deltaMove = { x: currentX - previousMousePosition.x, y: currentY - previousMousePosition.y };
+          bottleGroup.rotation.y += deltaMove.x * 0.01;
+          bottleGroup.rotation.x += deltaMove.y * 0.01;
+          previousMousePosition = { x: currentX, y: currentY };
+        }
+      }, {passive: true});
+      document.addEventListener('touchend', () => { isDragging = false; });
+
+      // Dynamic Texture Update
+      let premadeLabelImage = null;
+
+      function updateTexture() {
+        if (premadeLabelImage) {
+          // Draw pre-made label covering the entire canvas (360 wrapper)
+          ctx.drawImage(premadeLabelImage, 0, 0, textureCanvas.width, textureCanvas.height);
+        } else {
+          // Base label color
+          ctx.fillStyle = '#E8E0D5'; // matches var(--off-white)
+          ctx.fillRect(0, 0, textureCanvas.width, textureCanvas.height);
+        }
+        
+        bottleTexture.needsUpdate = true;
+      }
+      
+      updateTexture(); // Initial draw
+
+      document.getElementById('bottle-premade-upload').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function(event) {
+            const img = new Image();
+            img.onload = function() {
+              premadeLabelImage = img;
+              updateTexture();
+            }
+            img.src = event.target.result;
+          }
+          reader.readAsDataURL(file);
+        }
+      });
+
+      window.addEventListener('resize', () => {
+        camera.aspect = container.clientWidth / container.clientHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(container.clientWidth, container.clientHeight);
+      });
+    })();
+  </script>
+   <script>
+    // EMAILJS CONTACT FORM LOGIC
+    (function() {
+      // Pull variables from config.js
+      const PUBLIC_KEY = typeof EMAILJS_CONFIG !== 'undefined' ? EMAILJS_CONFIG.PUBLIC_KEY : "YOUR_PUBLIC_KEY_HERE";
+      const SERVICE_ID = typeof EMAILJS_CONFIG !== 'undefined' ? EMAILJS_CONFIG.SERVICE_ID : "YOUR_SERVICE_ID_HERE";
+      const TEMPLATE_ID = typeof EMAILJS_CONFIG !== 'undefined' ? EMAILJS_CONFIG.TEMPLATE_ID : "YOUR_TEMPLATE_ID_HERE";
+
+      // INITIALIZE EMAILJS
+      if (!PUBLIC_KEY.includes("YOUR_PUBLIC_KEY_HERE")) {
+        emailjs.init(PUBLIC_KEY);
+      }
+
+      document.getElementById('contact-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        
+        const statusDiv = document.getElementById('form-status');
+        const submitBtn = this.querySelector('button[type="submit"]');
+        
+        statusDiv.style.display = 'block';
+        statusDiv.className = '';
+        statusDiv.innerHTML = 'Sending message...';
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.7';
+
+        // Check if placeholders are still present. If yes, simulate the success to prevent the generic error.
+        if (PUBLIC_KEY.includes("YOUR_PUBLIC_KEY_HERE")) {
+          setTimeout(function() {
+              statusDiv.className = 'status-success';
+              statusDiv.innerHTML = 'Message Sent Successfully! <br><small style="font-size: 11px; margin-top: 5px; display: block; opacity: 0.9;">(Note: This is a simulation because the EmailJS keys in the HTML are placeholders. To receive real emails, please replace them with your actual keys.)</small>';
+              document.getElementById('contact-form').reset();
+              submitBtn.disabled = false;
+              submitBtn.style.opacity = '1';
+          }, 1000);
+          return;
+        }
+
+        // NOTE: Make sure your EmailJS template supports attachments
+        // The file input should be bound to a variable in your template
+        emailjs.sendForm(SERVICE_ID, TEMPLATE_ID, this)
+          .then(function() {
+              statusDiv.className = 'status-success';
+              statusDiv.innerHTML = 'Thank you! Your message has been sent successfully.';
+              document.getElementById('contact-form').reset();
+              submitBtn.disabled = false;
+              submitBtn.style.opacity = '1';
+          }, function(error) {
+              statusDiv.className = 'status-error';
+              statusDiv.innerHTML = 'Oops! Something went wrong. Please check your EmailJS configuration.';
+              submitBtn.disabled = false;
+              submitBtn.style.opacity = '1';
+              console.error('EmailJS Error:', error);
+          });
+      });
+    })();
+  </script>
 
   <script>
     // Cursor
